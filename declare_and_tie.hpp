@@ -14,6 +14,7 @@
 #include <boost/preprocessor/expand.hpp>
 #include <boost/mpl/aux_/preprocessor/is_seq.hpp>
 #include "is_boost_pp_tuple.hpp"
+#include "require_trailing_semicolon.hpp"
 
 /**
  * @brief Declare references to tuple elements with the given names
@@ -37,6 +38,7 @@
     static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, <, TUPLE),                  \
                   "Too few unpacked elements for tuple");                      \
     _impl_DECLARE_AND_TIE_VARIABLES(UNPACKED_ELEMENTS, TUPLE)
+    REQUIRE_TRAILING_SEMICOLON()
 
 #define COMPARE_SIZE(UNPACKED, REL, TUPLE)                                     \
 	(BOOST_PP_TUPLE_SIZE(UNPACKED) REL std::tuple_size<decltype(TUPLE)>::value)
