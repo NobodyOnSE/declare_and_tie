@@ -1,6 +1,10 @@
 #ifndef _guard_DECLARE_AND_TIE_HPP_
 #define _guard_DECLARE_AND_TIE_HPP_
 
+#if not(BOOST_PP_VARIADICS)
+#error "Boost preprocessor variadics support needed for DECLARE_AND_TIE!"
+#endif
+
 #include <boost/preprocessor/tuple/size.hpp>
 #include <boost/preprocessor/tuple/to_seq.hpp>
 #include <boost/preprocessor/seq/for_each_i.hpp>
