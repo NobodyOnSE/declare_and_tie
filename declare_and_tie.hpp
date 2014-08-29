@@ -33,15 +33,17 @@
 #define DECLARE_AND_TIE(UNPACKED_ELEMENTS, TUPLE)                              \
     static_assert(BOOST_PP_IS_TUPLE(UNPACKED_ELEMENTS),                        \
                   "First parameter must be a tuple!");                         \
-    static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, >, TUPLE),                  \
-                  "Too many unpacked elements for tuple");                     \
-    static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, <, TUPLE),                  \
-                  "Too few unpacked elements for tuple");                      \
-    _impl_DECLARE_AND_TIE_VARIABLES(UNPACKED_ELEMENTS, TUPLE)
+    static_assert(                                                             \
+        !COMPARE_PP_TUPLE_TO_CPP_TUPLE_SIZE(UNPACKED_ELEMENTS, >, TUPLE),      \
+        "Too many unpacked elements for tuple");                               \
+    static_assert(                                                             \
+        !COMPARE_PP_TUPLE_TO_CPP_TUPLE_SIZE(UNPACKED_ELEMENTS, <, TUPLE),      \
+        "Too few unpacked elements for tuple");                                \
+    _impl_DECLARE_AND_TIE_VARIABLES(UNPACKED_ELEMENTS, TUPLE);                 \
     REQUIRE_TRAILING_SEMICOLON()
 
-#define COMPARE_SIZE(UNPACKED, REL, TUPLE)                                     \
-	(BOOST_PP_TUPLE_SIZE(UNPACKED) REL std::tuple_size<decltype(TUPLE)>::value)
+#define COMPARE_PP_TUPLE_TO_CPP_TUPLE_SIZE(UNPACKED, REL, TUPLE)               \
+    (BOOST_PP_TUPLE_SIZE(UNPACKED) REL std::tuple_size<decltype(TUPLE)>::value)
 
 #define _impl_DECLARE_AND_TIE_ONE_VARIABLE(r, TUPLE, INDEX, VARNAME)           \
 	BOOST_PP_IF(_impl_TOKEN_IS_UNDERSCORE(VARNAME),                            \
