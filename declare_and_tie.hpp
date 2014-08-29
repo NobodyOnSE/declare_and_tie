@@ -9,13 +9,16 @@
 #include <boost/preprocessor/comparison/equal.hpp>
 #include <boost/preprocessor/expand.hpp>
 #include <boost/mpl/aux_/preprocessor/is_seq.hpp>
+#include "is_boost_pp_tuple.hpp"
 
 #define DECLARE_AND_TIE(UNPACKED_ELEMENTS, TUPLE)                              \
-	static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, >, TUPLE),                  \
-				  "Too many unpacked elements for tuple");                     \
-	static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, <, TUPLE),                  \
-				  "Too few unpacked elements for tuple");                      \
-	_impl_DECLARE_AND_TIE_VARIABLES(UNPACKED_ELEMENTS, TUPLE)
+    static_assert(BOOST_PP_IS_TUPLE(UNPACKED_ELEMENTS),                        \
+                  "First parameter must be a tuple!");                         \
+    static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, >, TUPLE),                  \
+                  "Too many unpacked elements for tuple");                     \
+    static_assert(!COMPARE_SIZE(UNPACKED_ELEMENTS, <, TUPLE),                  \
+                  "Too few unpacked elements for tuple");                      \
+    _impl_DECLARE_AND_TIE_VARIABLES(UNPACKED_ELEMENTS, TUPLE)
 
 #define COMPARE_SIZE(UNPACKED, REL, TUPLE)                                     \
 	(BOOST_PP_TUPLE_SIZE(UNPACKED) REL std::tuple_size<decltype(TUPLE)>::value)
