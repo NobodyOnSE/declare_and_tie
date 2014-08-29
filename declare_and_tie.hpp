@@ -15,6 +15,20 @@
 #include <boost/mpl/aux_/preprocessor/is_seq.hpp>
 #include "is_boost_pp_tuple.hpp"
 
+/**
+ * @brief Declare references to tuple elements with the given names
+ * @param UNPACKED_ELEMENTS a boost preprocessor tuple of names for references
+ * @param TUPLE to unpack
+ *
+ * Example usages:
+ *
+ * std::tuple<int, float, string> cppTuple;
+ * DECLARE_AND_TIE((a, b, c), cppTuple);
+ *
+ * std::tuple<int, float, string> cppTuple;
+ * //ignoring the float element
+ * DECLARE_AND_TIE((a, _, c), cppTuple);
+ */
 #define DECLARE_AND_TIE(UNPACKED_ELEMENTS, TUPLE)                              \
     static_assert(BOOST_PP_IS_TUPLE(UNPACKED_ELEMENTS),                        \
                   "First parameter must be a tuple!");                         \
